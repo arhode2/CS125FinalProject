@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
+
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +20,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private static final String TAG = "CS125FinalProject.main";
     public void sendMessage(View view) {
-        TextInputEditText playerName = (TextInputEditText)findViewById(R.id.player_name);
-        Log.d(TAG, "Button Pressed " + playerName.getText().toString());
+        TextInputEditText playerName = (TextInputEditText)findViewById(R.id.input_player);
+        TextInputEditText season = (TextInputEditText)findViewById(R.id.input_season);
+        Log.d(TAG, "Player Name: " + playerName.getText().toString());
+        Log.d(TAG, "season: " + season.getText().toString());
+        Toast.makeText(getApplicationContext(), "Message", Toast.LENGTH_LONG).show();
     }
 }
