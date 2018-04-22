@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
 
+import android.widget.ImageView;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +15,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //ImageView nbaLogo = (ImageView)findViewById(R.id.imageView2);
+        //nbaLogo.setImageResource(R.drawable.nba_logo);
+        ImageView dRose = (ImageView)findViewById(R.id.imageView);
+        dRose.setImageResource(R.drawable.nba_logo);
     }
     private static final String TAG = "CS125FinalProject.main";
     public void sendMessage(View view) {
