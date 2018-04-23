@@ -7,6 +7,7 @@ import android.view.View;
 import android.util.Log;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,8 +25,12 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessage(View view) {
         TextInputEditText playerName = (TextInputEditText)findViewById(R.id.input_player);
         TextInputEditText season = (TextInputEditText)findViewById(R.id.input_season);
-        Log.d(TAG, "Player Name: " + playerName.getText().toString());
-        Log.d(TAG, "season: " + season.getText().toString());
-        Toast.makeText(getApplicationContext(), "Message", Toast.LENGTH_LONG).show();
+        TextView textOutput = (TextView)findViewById(R.id.text_output);
+        //Log.d(TAG, "Player Name: " + playerName.getText().toString());
+        //Log.d(TAG, "season: " + season.getText().toString());
+        //Toast.makeText(getApplicationContext(), "Message", Toast.LENGTH_LONG).show();
+        textOutput.setText("This is where the information will go."
+                + "\nPlayer: " + playerName.getText().toString()
+                + "\nSeason: " + season.getText().toString());
     }
 }

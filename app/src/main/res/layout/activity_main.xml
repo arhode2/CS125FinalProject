@@ -9,16 +9,39 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="74dp"
-        android:layout_height="116dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="65dp"
+        android:layout_height="105dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:scaleType="fitXY"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher" />
 
+
+    <TextView
+        android:id="@+id/text_output"
+        android:layout_width="356dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Enter player name on top line (First Last). Enter season on bottom line (yyyy-yyyy)."
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:verticalScrollbarPosition="defaultPosition"
+        app:layout_constraintBottom_toTopOf="@+id/go_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:srcCompat="@mipmap/ic_launcher" />
 
     <Button
         android:id="@+id/go_button"
@@ -27,30 +50,31 @@
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:onClick="sendMessage"
+        android:scrollbars="vertical"
         android:text="Go!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_output" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="374dp"
-        android:layout_height="120dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="128dp"
+        android:layout_width="254dp"
+        android:layout_height="113dp"
+        android:layout_marginBottom="17dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="10"
+        app:layout_constraintBottom_toTopOf="@+id/text_output"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/input_player"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enter Player Name." />
+            android:layout_height="45dp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -61,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enter Season." />
+                android:text="Steph " />
 
         </android.support.design.widget.TextInputLayout>
 
