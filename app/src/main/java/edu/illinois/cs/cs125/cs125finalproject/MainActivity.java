@@ -102,6 +102,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void parseData(final JSONArray data) {
-
+        JsonParser parser = new JsonParser();
     }
 }
