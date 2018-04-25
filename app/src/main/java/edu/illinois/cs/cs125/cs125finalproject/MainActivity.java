@@ -56,5 +56,30 @@ public class MainActivity extends AppCompatActivity {
         textOutput.setText("This is where the information will go."
                 + "\nPlayer: " + playerName.getText().toString()
                 + "\nSeason: " + season.getText().toString());
+        startAPICall();
+    }
+    void startAPICall() {
+        try {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    "http://stats.nba.com/stats/drafthistory/?leagueID=00",
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(final JSONObject response) {
+                            try {
+                                Log.d(TAG, response.toString(2));
+                            } catch (JSONException ignored) { }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(final VolleyError error) {
+                    Log.e(TAG, error.toString());
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
