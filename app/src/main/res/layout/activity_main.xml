@@ -35,7 +35,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:gravity="top"
-        android:text="Enter player name on top line (First Last). Enter season on bottom line (yyyy-yyyy)."
+        android:text="Enter player name on top line (First Last). Enter the beginning year of the season on bottom line (yyyy)."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="24sp"
         android:verticalScrollbarPosition="defaultPosition"

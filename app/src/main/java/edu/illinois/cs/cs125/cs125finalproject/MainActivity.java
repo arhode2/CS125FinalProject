@@ -1,4 +1,5 @@
 package edu.illinois.cs.cs125.cs125finalproject;
+import android.nfc.Tag;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,10 +60,21 @@ public class MainActivity extends AppCompatActivity {
         startAPICall();
     }
     void startAPICall() {
+        TextInputEditText playerName = (TextInputEditText)findViewById(R.id.input_player);
+        TextInputEditText season = (TextInputEditText)findViewById(R.id.input_season);
+        TextView textOutput = (TextView)findViewById(R.id.text_output);
+        String nameString = playerName.getText().toString().toLowerCase();
+        String seasonString = season.getText().toString();
+        String[] fullname = nameString.split(" ");
+        String firstName = fullname[0];
+        String lastName = fullname[1];
+        Log.d(TAG, "lastName: " + lastName);
+        Log.d(TAG, "firstName: " + firstName);
+        Log.d(TAG, "season: " + seasonString);
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    "http://stats.nba.com/stats/drafthistory/?leagueID=00",
+                    "http://api.suredbits.com/nba/v0/stats/" + lastName + "/" + firstName + "/" + seasonString,
                     null,
                     new Response.Listener<JSONObject>() {
                         @Override
