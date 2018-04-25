@@ -12,12 +12,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import com.google.gson.JsonParser;
 import org.json.JSONObject;
-//Used these for debugging. Might need them again eventually.
+
 
 /** <p>These are the packages we'll need for the API calls. Required some tweaking
  * to build.gradle(Module:app) to get the files for the MainActivity to recognize the
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     /** Request queue for the API razzle dazzle**/
     private static RequestQueue requestQueue;
+
+    /** JSON Array for storing the API request data globally.*/
+    JSONArray playerData = new JSONArray();
 
     /** Runs when the app is booted up */
     @Override
@@ -72,15 +78,16 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "firstName: " + firstName);
         Log.d(TAG, "season: " + seasonString);
         try {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                     Request.Method.GET,
                     "http://api.suredbits.com/nba/v0/stats/" + lastName + "/" + firstName + "/" + seasonString,
                     null,
-                    new Response.Listener<JSONObject>() {
+                    new Response.Listener<JSONArray>() {
                         @Override
-                        public void onResponse(final JSONObject response) {
+                        public void onResponse(final JSONArray response) {
                             try {
                                 Log.d(TAG, response.toString(2));
+                                playerData = response;
                             } catch (JSONException ignored) { }
                         }
                     }, new Response.ErrorListener() {
@@ -89,9 +96,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, error.toString());
                 }
             });
-            requestQueue.add(jsonObjectRequest);
+            requestQueue.add(jsonArrayRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void parseData(final JSONArray data) {
+
     }
 }
