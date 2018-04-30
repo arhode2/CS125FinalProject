@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,8 +19,18 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 
 /** <p>These are the packages we'll need for the API calls. Required some tweaking
@@ -57,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText playerName = (TextInputEditText)findViewById(R.id.input_player);
         TextInputEditText season = (TextInputEditText)findViewById(R.id.input_season);
         TextView textOutput = (TextView)findViewById(R.id.text_output);
-        //Log.d(TAG, "Player Name: " + playerName.getText().toString());
-        //Log.d(TAG, "season: " + season.getText().toString());
-        //Toast.makeText(getApplicationContext(), "Message", Toast.LENGTH_LONG).show();
         textOutput.setText("This is where the information will go."
                 + "\nPlayer: " + playerName.getText().toString()
                 + "\nSeason: " + season.getText().toString());
@@ -74,9 +82,6 @@ public class MainActivity extends AppCompatActivity {
         String[] fullname = nameString.split(" ");
         String firstName = fullname[0];
         String lastName = fullname[1];
-        Log.d(TAG, "lastName: " + lastName);
-        Log.d(TAG, "firstName: " + firstName);
-        Log.d(TAG, "season: " + seasonString);
         try {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                     Request.Method.GET,
@@ -86,8 +91,9 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(final JSONArray response) {
                             try {
-                                Log.d(TAG, response.toString(2));
                                 playerData = response;
+                                Log.d(TAG, playerData.toString(2));
+                                parseData();
                             } catch (JSONException ignored) { }
                         }
                     }, new Response.ErrorListener() {
@@ -101,7 +107,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void parseData(final JSONArray data) {
+    public void parseData() {
         JsonParser parser = new JsonParser();
+        JsonArray playerDataArray = parser.parse(playerData.toString()).getAsJsonArray();
+        Log.d(TAG, "PLAYER DATA ARRAY IS: " + playerDataArray.toString());
+
     }
 }
