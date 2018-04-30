@@ -110,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
     public void parseData() {
         JsonParser parser = new JsonParser();
         JsonArray playerDataArray = parser.parse(playerData.toString()).getAsJsonArray();
-        Log.d(TAG, "PLAYER DATA ARRAY IS: " + playerDataArray.toString());
-
+        Log.d(TAG,"PLAYER DATA ARRAY IS: " + playerDataArray.toString());
+        JsonObject playerDataObject = playerDataArray.get(0).getAsJsonObject();
+        Log.d(TAG, "PLAYER DATA OBJECT IS: " + playerDataObject.toString());
+        int playerID = playerDataObject.get("playerId").getAsInt();
+        Log.d(TAG, "playerId: " + playerID);
     }
 }
