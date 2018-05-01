@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         TextView textOutput = (TextView) findViewById(R.id.text_output);
         String playerNameString = playerName.getText().toString();
         String[] fullname = playerName.getText().toString().toLowerCase().split(" ");
+        if (fullname.length != 2) {
+            Toast.makeText(getApplicationContext(), "Please enter a valid name", Toast.LENGTH_LONG).show();
+            return;
+        }
         String firstName = fullname[0];
         String lastName = fullname[1];
         Log.d(TAG, "LAST: " + lastName + " FIRST: " + firstName);
@@ -97,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d(TAG, playerData.toString(2));
                                 playerID = getPlayerID();
                                 startSecondAPICall("https://stats.nba.com/stats/playerprofilev2?playerID=" + playerID + "&PerMode=PerGame");
-
-
-                            } catch (JSONException ignored) { }
+                                } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Please enter a current player name. Check your spelling.", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override

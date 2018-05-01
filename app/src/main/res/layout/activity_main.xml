@@ -35,7 +35,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:gravity="top"
-        android:text="Enter player name above (First Last), and press go."
+        android:text="Enter the name of a player currently in the NBA above (First Last), and press go."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="24sp"
         android:verticalScrollbarPosition="defaultPosition"
