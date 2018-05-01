@@ -55,9 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     /** variable to store playerID globally.*/
     int playerID = 0;
-    /** map for the stats to display. Updated on successful api calls.
-     * Use these variables for updating the UI
-     */
+
+    /** map for the stats to display. Updated on successful api calls.*/
     Map mainStats = new HashMap();
 
     /** Runs when the app is booted up */
@@ -74,18 +73,15 @@ public class MainActivity extends AppCompatActivity {
         ImageView nbaLogo = (ImageView)findViewById(R.id.ImageView_logo);
         nbaLogo.setImageResource(R.drawable.nba_logo);
     }
-    public void sendMessage(View view) {
+    public void getStats(View view) {
         TextInputEditText playerName = (TextInputEditText) findViewById(R.id.input_player);
-        TextInputEditText season = (TextInputEditText) findViewById(R.id.input_season);
         TextView textOutput = (TextView) findViewById(R.id.text_output);
-        String seasonString = season.getText().toString();
         String playerNameString = playerName.getText().toString();
         String[] fullname = playerName.getText().toString().toLowerCase().split(" ");
         String firstName = fullname[0];
         String lastName = fullname[1];
-        Log.d(TAG, "LAST: " + lastName + " FIRST: " + firstName + " SEASON: " + seasonString);
+        Log.d(TAG, "LAST: " + lastName + " FIRST: " + firstName);
         startFirstAPICall("http://api.suredbits.com/nba/v0/stats/" + lastName + "/" + firstName);
-
     }
     void startFirstAPICall(final String inputURL) {
         try {
@@ -172,24 +168,22 @@ public class MainActivity extends AppCompatActivity {
         mainStats.put("BLK", currentArray.get(23).getAsString());
         mainStats.put("STL", currentArray.get(22).getAsString());
         mainStats.put("TOV", currentArray.get(24).getAsString());
-        Log.d(TAG, "TEAM ABBREVIATION: " + mainStats.get("Team"));
-        Log.d(TAG, "PPG: " + mainStats.get("PPG"));
-        Log.d(TAG, "APG: " + mainStats.get("APG"));
-        Log.d(TAG, "RPG: " + mainStats.get("RPG"));
-        Log.d(TAG, "BLK: " + mainStats.get("BLK"));
-        Log.d(TAG, "STL: " + mainStats.get("STL"));
-        Log.d(TAG, "TOV: " + mainStats.get("TOV"));
+        mainStats.put("Age", currentArray.get(5).getAsString());
+        mainStats.put("MPG", currentArray.get(8).getAsString());
         updateUI();
         return;
     }
     public void updateUI() {
         TextView textOutput = (TextView) findViewById(R.id.text_output);
-        textOutput.setText("Team: " + mainStats.get("Team")
+        textOutput.setText(
+                "Age: " + mainStats.get("Age")
+                + "\nTeam: " + mainStats.get("Team")
                 + "\nPPG: " + mainStats.get("PPG")
                 + "\nAPG: " + mainStats.get("APG")
                 + "\nRPG: " + mainStats.get("RPG")
                 + "\nBLK: " + mainStats.get("BLK")
                 + "\nSTL: " + mainStats.get("STL")
-                + "\nTOV: " + mainStats.get("TOV"));
+                + "\nTOV: " + mainStats.get("TOV")
+                + "\nMPG: " + mainStats.get("MPG"));
     }
 }

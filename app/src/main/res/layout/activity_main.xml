@@ -35,7 +35,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:gravity="top"
-        android:text="Enter player name on top line (First Last). Enter the beginning year of the season on bottom line (yyyy)."
+        android:text="Enter player name above (First Last), and press go."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="24sp"
         android:verticalScrollbarPosition="defaultPosition"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:onClick="sendMessage"
+        android:onClick="getStats"
         android:scrollbars="vertical"
         android:text="Go!"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,18 +78,6 @@
             android:id="@+id/input_player"
             android:layout_width="match_parent"
             android:layout_height="45dp" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/input_season"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-        </android.support.design.widget.TextInputLayout>
 
     </android.support.design.widget.TextInputLayout>
 
