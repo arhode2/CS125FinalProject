@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/background</item>
         <item name="colorPrimaryDark">@color/background</item>
         <item name="colorAccent">@color/nbaRed</item>
+
     </style>
 
 </resources>
