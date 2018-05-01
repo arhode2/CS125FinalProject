@@ -32,6 +32,9 @@ import org.json.JSONStringer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import java.util.Map;
+import java.util.HashMap;
+
 
 /** <p>These are the packages we'll need for the API calls. Required some tweaking
  * to build.gradle(Module:app) to get the files for the MainActivity to recognize the
@@ -50,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
     /** JSON Array for storing the API request data globally.*/
     JSONArray playerData = new JSONArray();
 
+    /** variable to store playerID globally.*/
+    int playerID = 0;
+    /** map for the stats to display. Updated on successful api calls.
+     * Use these variables for updating the UI
+     */
+    Map mainStats = new HashMap();
+
     /** Runs when the app is booted up */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,27 +75,26 @@ public class MainActivity extends AppCompatActivity {
         nbaLogo.setImageResource(R.drawable.nba_logo);
     }
     public void sendMessage(View view) {
-        TextInputEditText playerName = (TextInputEditText)findViewById(R.id.input_player);
-        TextInputEditText season = (TextInputEditText)findViewById(R.id.input_season);
-        TextView textOutput = (TextView)findViewById(R.id.text_output);
-        textOutput.setText("This is where the information will go."
-                + "\nPlayer: " + playerName.getText().toString()
-                + "\nSeason: " + season.getText().toString());
-        startAPICall();
-    }
-    void startAPICall() {
-        TextInputEditText playerName = (TextInputEditText)findViewById(R.id.input_player);
-        TextInputEditText season = (TextInputEditText)findViewById(R.id.input_season);
-        TextView textOutput = (TextView)findViewById(R.id.text_output);
-        String nameString = playerName.getText().toString().toLowerCase();
+        TextInputEditText playerName = (TextInputEditText) findViewById(R.id.input_player);
+        TextInputEditText season = (TextInputEditText) findViewById(R.id.input_season);
+        TextView textOutput = (TextView) findViewById(R.id.text_output);
         String seasonString = season.getText().toString();
-        String[] fullname = nameString.split(" ");
+        String playerNameString = playerName.getText().toString();
+        String[] fullname = playerName.getText().toString().toLowerCase().split(" ");
         String firstName = fullname[0];
         String lastName = fullname[1];
+        textOutput.setText("This is where the information will go."
+                + "\nPlayer: " + playerNameString
+                + "\nSeason: " + seasonString);
+        Log.d(TAG, "LAST: " + lastName + " FIRST: " + firstName + " SEASON: " + seasonString);
+        startFirstAPICall("http://api.suredbits.com/nba/v0/stats/" + lastName + "/" + firstName);
+
+    }
+    void startFirstAPICall(final String inputURL) {
         try {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                     Request.Method.GET,
-                    "http://api.suredbits.com/nba/v0/stats/" + lastName + "/" + firstName + "/" + seasonString,
+                     inputURL,
                     null,
                     new Response.Listener<JSONArray>() {
                         @Override
@@ -93,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 playerData = response;
                                 Log.d(TAG, playerData.toString(2));
-                                parseData();
+                                playerID = getPlayerID();
+                                startSecondAPICall("https://stats.nba.com/stats/playerprofilev2?playerID=" + playerID + "&PerMode=PerGame");
+
+
                             } catch (JSONException ignored) { }
                         }
                     }, new Response.ErrorListener() {
@@ -107,13 +119,70 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void parseData() {
+    /** I know I'm an idiot, but I spent a long time fucking with this and got nowhere better.*/
+    void startSecondAPICall(final String inputURL) {
+        try {
+            JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    inputURL,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(final JSONObject response) {
+                            parseStats(response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(final VolleyError error) {
+                    Log.e(TAG, error.toString());
+                }
+            });
+            requestQueue.add(jsonArrayRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public int getPlayerID() {
         JsonParser parser = new JsonParser();
         JsonArray playerDataArray = parser.parse(playerData.toString()).getAsJsonArray();
-        Log.d(TAG,"PLAYER DATA ARRAY IS: " + playerDataArray.toString());
+        //Log.d(TAG,"PLAYER DATA ARRAY IS: " + playerDataArray.toString());
         JsonObject playerDataObject = playerDataArray.get(0).getAsJsonObject();
-        Log.d(TAG, "PLAYER DATA OBJECT IS: " + playerDataObject.toString());
+        //Log.d(TAG, "PLAYER DATA OBJECT IS: " + playerDataObject.toString());
         int playerID = playerDataObject.get("playerId").getAsInt();
-        Log.d(TAG, "playerId: " + playerID);
+        //Log.d(TAG, "playerId: " + playerID);
+        return playerID;
+    }
+    public void parseStats(final JSONObject allStats) {
+        JsonParser parser = new JsonParser();
+        JsonObject dataObject = parser.parse(allStats.toString()).getAsJsonObject();
+        JsonArray resultSets = dataObject.get("resultSets").getAsJsonArray();
+        JsonObject resultSetsObject = resultSets.get(0).getAsJsonObject();
+        JsonArray rowSet = resultSetsObject.get("rowSet").getAsJsonArray();
+        JsonArray currentArray = null;
+        String season = "";
+        for (int i = 0; i < rowSet.size(); i++) {
+            currentArray = rowSet.get(i).getAsJsonArray();
+            season = currentArray.get(1).getAsString();
+        }
+        Log.d(TAG, currentArray.toString());
+        mainStats.put("Team", currentArray.get(4).getAsString());
+        mainStats.put("PPG", currentArray.get(26).getAsString());
+        mainStats.put("APG", currentArray.get(21).getAsString());
+        mainStats.put("RPG", currentArray.get(20).getAsString());
+        mainStats.put("BLK", currentArray.get(23).getAsString());
+        mainStats.put("STL", currentArray.get(22).getAsString());
+        mainStats.put("TOV", currentArray.get(24).getAsString());
+        Log.d(TAG, "TEAM ABBREVIATION: " + mainStats.get("Team"));
+        Log.d(TAG, "PPG: " + mainStats.get("PPG"));
+        Log.d(TAG, "APG: " + mainStats.get("APG"));
+        Log.d(TAG, "RPG: " + mainStats.get("RPG"));
+        Log.d(TAG, "BLK: " + mainStats.get("BLK"));
+        Log.d(TAG, "STL: " + mainStats.get("STL"));
+        Log.d(TAG, "TOV: " + mainStats.get("TOV"));
+        updateUI();
+        return;
+    }
+    public void updateUI() {
+        return;
     }
 }
