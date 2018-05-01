@@ -64,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /** Get the request queue ready. I'm taking this from Lab 12.
-         * I don't know it myself.
+        /** Get the request queue ready. Using lab 12 as an example.
          */
         requestQueue = Volley.newRequestQueue(this);
 
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    /** I know I'm an idiot, but I spent a long time fucking with this and got nowhere better.*/
+    /** I know I'm an idiot, but I spent a long time with this and got nowhere better.*/
     void startSecondAPICall(final String inputURL) {
         try {
             JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(

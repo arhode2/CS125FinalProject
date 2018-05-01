@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="nbaRed">#C41717</color>
     <color name="nbaBlue">#0066CC</color>
+    <color name="background">#212F3C</color>
+    <color name="whiteFont">#FFFFFF</color>
 </resources>
