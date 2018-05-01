@@ -83,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
         String[] fullname = playerName.getText().toString().toLowerCase().split(" ");
         String firstName = fullname[0];
         String lastName = fullname[1];
-        textOutput.setText("This is where the information will go."
-                + "\nPlayer: " + playerNameString
-                + "\nSeason: " + seasonString);
         Log.d(TAG, "LAST: " + lastName + " FIRST: " + firstName + " SEASON: " + seasonString);
         startFirstAPICall("http://api.suredbits.com/nba/v0/stats/" + lastName + "/" + firstName);
 
@@ -166,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d(TAG, currentArray.toString());
         mainStats.put("Team", currentArray.get(4).getAsString());
+        if (mainStats.get("Team").equals("TOT")) {
+            mainStats.put("Team", "Multiple");
+        }
         mainStats.put("PPG", currentArray.get(26).getAsString());
         mainStats.put("APG", currentArray.get(21).getAsString());
         mainStats.put("RPG", currentArray.get(20).getAsString());
@@ -183,6 +183,13 @@ public class MainActivity extends AppCompatActivity {
         return;
     }
     public void updateUI() {
-        return;
+        TextView textOutput = (TextView) findViewById(R.id.text_output);
+        textOutput.setText("Team: " + mainStats.get("Team")
+                + "\nPPG: " + mainStats.get("PPG")
+                + "\nAPG: " + mainStats.get("APG")
+                + "\nRPG: " + mainStats.get("RPG")
+                + "\nBLK: " + mainStats.get("BLK")
+                + "\nSTL: " + mainStats.get("STL")
+                + "\nTOV: " + mainStats.get("TOV"));
     }
 }
